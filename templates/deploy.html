@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Prediction AI</title>
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='deploy.css') }}">
+</head>
+<body>
+<section class="showcase">
+    <header>
+      <h1 class="logo">Weather Prediction</h1>
+    </header>
+    <video autoplay muted loop id="background-video">
+        <source src="{{ url_for('static', filename='home.mp4') }}" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+    <form action="{{ url_for('result') }}" method="POST">
+        <div class="form">
+
+            <div class="input-field">
+          <h2>Temperature(°C):</h2>
+          <input class="search" type="text" name="a" placeholder="Enter the Temperature (°C)" required="required">
+            </div>
+        <br><br>
+
+            <div class="input-field">
+          <h2>Humidity(%):</h2>
+          <input class="search" type="text" name="b" placeholder="Enter the Humidity (%)" required="required">
+            </div>
+        <br><br>
+
+            <div class="input-field">
+          <h2>Light Intensity(lux):</h2>
+          <input class="search" type="text" name="c" placeholder="Enter the Light Intensity (lux)" required="required">
+        </div>
+        <br><br>
+
+            <div class="input-field">
+          <h2>Air Quality (AQI):</h2>
+          <input class="search" type="text" name="d" placeholder="Enter Air Quality (AQI)" required="required">
+            </div>
+
+        </div>
+        <input type="submit" value="Get Prediction">
+    </form>
+  </section>
+</body>
+</html>

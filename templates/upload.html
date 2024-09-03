@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload CSV</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='upload.css') }}">
+</head>
+<body>
+<section class="showcase">
+    <header>
+        <h1 class="logo">Upload CSV to Generate New Model</h1>
+    </header>
+    <video autoplay muted loop id="background-video">
+        <source src="{{ url_for('static', filename='home.mp4') }}" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+    <form action="/upload_csv" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".csv" required><br><br>
+        <input type="submit" value="Upload and Train Model">
+    </form>
+</section>
+</body>
+</html>

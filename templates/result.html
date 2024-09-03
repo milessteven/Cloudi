@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather and Air Quality Result</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='result.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <section class="showcase">
+    <header>
+      <h1 class="logo">Weather Result</h1> <br>
+    </header>
+
+    {% if weather_data == 'Clear' %}
+    <h1>Weather Condition: Clear</h1>
+    <video autoplay muted loop id="background-video1">
+      <source src="{{ url_for('static', filename='clear.mp4') }}" type="video/mp4">
+    </video>
+
+    {% elif weather_data == 'Rainy' %}
+    <h1>Weather Condition: Light Rainfall</h1>
+    <video autoplay muted loop id="background-video">
+      <source src="{{ url_for('static', filename='rain1.mp4') }}" type="video/mp4">
+    </video>
+
+    {% elif weather_data == 'Foggy' %}
+    <h1>Weather Condition: Foggy</h1>
+    <video autoplay muted loop id="background-video2">
+      <source src="{{ url_for('static', filename='foggy.mp4') }}" type="video/mp4">
+    </video>
+
+    {% elif weather_data == 'Cloudy' %}
+    <h1>Weather Condition: Cloudy</h1>
+    <video autoplay muted loop id="background-video3">
+      <source src="{{ url_for('static', filename='cloudy.mp4') }}" type="video/mp4">
+    </video>
+
+    {% elif weather_data == 'Stormy' %}
+    <h1>Weather Condition: Heavy Rainfall</h1>
+    <video autoplay muted loop id="background-video4">
+      <source src="{{ url_for('static', filename='rain.mp4') }}" type="video/mp4">
+    </video>
+    {% endif %}
+
+    <div class="overlay"></div>
+
+    {% if air_quality_data == 'Good' %}
+    <h1>Air-quality Condition: Good</h1>
+
+    {% elif air_quality_data == 'Moderate' %}
+    <h1>Air-quality Condition: Moderate</h1>
+
+    {% elif air_quality_data == 'Unhealthy' %}
+    <h1>Air-quality Condition: Unhealthy</h1>
+
+    {% elif air_quality_data == 'Very Unhealthy' %}
+    <h1>Air-quality Condition: Very Unhealthy</h1>
+
+    {% elif air_quality_data == 'Hazardous' %}
+    <h1>Air-quality Condition: Hazardous</h1>
+    {% endif %}
+  </section>
+
+  <section class="graph">
+    <h2>Predicted Conditions Graphical Representation</h2>
+
+    <!-- Scale changer dropdown -->
+    <label for="scaleSelector">Select Scale:</label>
+    <select id="scaleSelector" onchange="changeScale(this.value)">
+      <option value="linear">Linear</option>
+      <option value="logarithmic">Logarithmic</option>
+    </select>
+
+    <div class="graph-container">
+        <canvas id="myChart1" class="canvas-style"></canvas>
+    </div>
+
+    <div class="graph-container">
+        <canvas id="myChart2" class="canvas-style"></canvas>
+    </div>
+
+    <div class="graph-container">
+        <canvas id="myChart3" class="canvas-style"></canvas>
+    </div>
+
+    <div class="graph-container">
+        <canvas id="myChart4" class="canvas-style"></canvas>
+    </div>
+
+    <script>
+        // Initialize charts
+        var chart1, chart2, chart3, chart4;
+
+        {% if temperature_values %}
+        chart1 = new Chart(document.getElementById('myChart1').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+                datasets: [{
+                    label: 'Temperature',
+                    data: {{ temperature_values|safe }},
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear'
+                    }
+                }
+            }
+        });
+        {% endif %}
+
+        {% if humidity_values %}
+        chart2 = new Chart(document.getElementById('myChart2').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+                datasets: [{
+                    label: 'Humidity',
+                    data: {{ humidity_values|safe }},
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear'
+                    }
+                }
+            }
+        });
+        {% endif %}
+
+        {% if lightintensity_values %}
+        chart3 = new Chart(document.getElementById('myChart3').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+                datasets: [{
+                    label: 'Light Intensity',
+                    data: {{ lightintensity_values|safe }},
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear'
+                    }
+                }
+            }
+        });
+        {% endif %}
+
+        {% if airquality_values %}
+        chart4 = new Chart(document.getElementById('myChart4').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+                datasets: [{
+                    label: 'Air Quality',
+                    data: {{ airquality_values|safe }},
+                    borderColor: 'rgba(150, 235, 235, 1)',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear'
+                    }
+                }
+            }
+        });
+        {% endif %}
+
+        function changeScale(scaleType) {
+            if (chart1) chart1.options.scales.y.type = scaleType;
+            if (chart2) chart2.options.scales.y.type = scaleType;
+            if (chart3) chart3.options.scales.y.type = scaleType;
+            if (chart4) chart4.options.scales.y.type = scaleType;
+
+            if (chart1) chart1.update();
+            if (chart2) chart2.update();
+            if (chart3) chart3.update();
+            if (chart4) chart4.update();
+        }
+    </script>
+  </section>
+</body>
+</html>
